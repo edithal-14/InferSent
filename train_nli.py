@@ -21,14 +21,14 @@ from mutils import get_optimizer
 from models import NLINet
 
 
-GLOVE_PATH = "dataset/GloVe/glove.840B.300d.txt"
+GLOVE_PATH = "/home1/tirthankar/glove.840B.300d.txt"
 
 
 parser = argparse.ArgumentParser(description='NLI training')
 # paths
 parser.add_argument("--nlipath", type=str, default='dataset/SNLI/', help="NLI data path (SNLI or MultiNLI)")
-parser.add_argument("--outputdir", type=str, default='savedir/', help="Output directory")
-parser.add_argument("--outputmodelname", type=str, default='model.pickle')
+parser.add_argument("--outputdir", type=str, default='models/', help="Output directory")
+parser.add_argument("--outputmodelname", type=str, default='model_2048_attn.pickle')
 
 
 # training
@@ -44,15 +44,15 @@ parser.add_argument("--minlr", type=float, default=1e-5, help="minimum lr")
 parser.add_argument("--max_norm", type=float, default=5., help="max norm (grad clipping)")
 
 # model
-parser.add_argument("--encoder_type", type=str, default='BLSTMEncoder', help="see list of encoders")
-parser.add_argument("--enc_lstm_dim", type=int, default=2048, help="encoder nhid dimension")
+parser.add_argument("--encoder_type", type=str, default='InnerAttentionNAACLEncoder', help="see list of encoders")
+parser.add_argument("--enc_lstm_dim", type=int, default=1024, help="encoder nhid dimension")
 parser.add_argument("--n_enc_layers", type=int, default=1, help="encoder num layers")
-parser.add_argument("--fc_dim", type=int, default=512, help="nhid of fc layers")
+parser.add_argument("--fc_dim", type=int, default=256, help="nhid of fc layers")
 parser.add_argument("--n_classes", type=int, default=3, help="entailment/neutral/contradiction")
 parser.add_argument("--pool_type", type=str, default='max', help="max or mean")
 
 # gpu
-parser.add_argument("--gpu_id", type=int, default=3, help="GPU ID")
+parser.add_argument("--gpu_id", type=int, default=0, help="GPU ID")
 parser.add_argument("--seed", type=int, default=1234, help="seed")
 
 
@@ -300,5 +300,5 @@ evaluate(1e6, 'valid', True)
 evaluate(0, 'test', True)
 
 # Save encoder instead of full model
-torch.save(nli_net.encoder,
-           os.path.join(params.outputdir, params.outputmodelname + '.encoder'))
+# torch.save(nli_net.encoder,
+#            os.path.join(params.outputdir, params.outputmodelname + '.encoder'))
